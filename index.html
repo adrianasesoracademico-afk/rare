@@ -9,9 +9,21 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         
-        body {
+        body, html {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; 
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            background-color: #f1f5f9; /* Un tono un poco más oscuro para resaltar los cuadros blancos */
+        }
+
+        .main-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem; /* Aumentado de 1rem */
+            max-width: 1100px;
+            margin: 0 auto;
         }
 
         .step-card {
@@ -20,18 +32,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 180px; /* Altura fija para uniformidad */
+            flex: 1;
+            padding: 1rem;
         }
 
         .node-connector {
             height: 2px;
             background: linear-gradient(90deg, #e2e8f0 0%, #cbd5e1 100%);
-            flex-grow: 1;
+            width: 2.5rem; /* Aumentado para dar más espacio entre flechas */
             align-self: center;
         }
 
         .outcome-box {
             animation: fadeIn 0.4s ease-out;
+            transition: all 0.3s ease;
         }
 
         @keyframes fadeIn {
@@ -42,118 +56,137 @@
         .toggle-dot {
             transition: all 0.3s ease;
         }
+
+        /* Ajustes de legibilidad para el simulador */
+        .sim-btn {
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        @media (max-height: 750px) {
+            .concept-text { font-size: 0.8rem; padding: 0.5rem 1rem; }
+            .header-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+            .main-container { padding: 1rem; }
+            .mb-gap { margin-bottom: 0.75rem; }
+        }
+
+        @media (min-height: 751px) {
+            .mb-gap { margin-bottom: 1.5rem; }
+        }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body>
 
-    <div class="max-w-6xl mx-auto">
-        <!-- Header -->
-        <header class="mb-12 text-center">
-            <h1 class="text-4xl font-bold text-slate-800 mb-2">Ecosistema de Experiencia Activa</h1>
-            <p class="text-slate-500 max-w-2xl mx-auto">Sintetiza la secuencia lógica del aprendizaje activo para garantizar coherencia pedagógica.</p>
+    <div class="main-container">
+        <!-- Header con Texto Conceptual -->
+        <header class="mb-gap text-center shrink-0">
+            <h1 class="header-title text-2xl md:text-3xl font-bold text-slate-800 mb-3">Ecosistema R.A.R.E.</h1>
+            <div class="concept-text bg-white p-4 md:p-5 rounded-2xl border border-slate-200 shadow-sm max-w-3xl mx-auto">
+                <p class="text-slate-700 text-sm md:text-base leading-relaxed">
+                    Sintetizamos la experiencia activa en una secuencia lógica: 
+                    <span class="font-bold text-indigo-600 italic">Reto → Acción → Reflexión → Evidencia</span>. 
+                    Esta estructura garantiza coherencia pedagógica y evita actividades desarticuladas.
+                </p>
+            </div>
         </header>
 
-        <!-- Main Sequence Visualization -->
-        <div class="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-slate-100 mb-8">
-            <h2 class="text-xl font-semibold text-slate-700 mb-10 flex items-center">
-                <i class="fas fa-project-diagram mr-3 text-indigo-500"></i> La Secuencia Lógica
-            </h2>
-            
-            <div class="flex flex-col md:flex-row items-stretch justify-between gap-4">
+        <!-- Visualización de la Secuencia -->
+        <div class="bg-white rounded-[2rem] p-6 md:p-8 shadow-sm border border-slate-100 mb-gap flex-1 flex flex-col justify-center">
+            <div class="flex flex-row items-stretch justify-between gap-4 h-full max-h-[220px]">
                 <!-- Reto -->
-                <div id="card-reto" class="step-card bg-indigo-50 border-2 border-indigo-200 p-6 rounded-2xl w-full md:w-1/4 text-center">
-                    <div class="w-12 h-12 bg-indigo-500 text-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-indigo-200">
-                        <i class="fas fa-flag-checkered text-xl"></i>
+                <div id="card-reto" class="step-card bg-indigo-50 border-2 border-indigo-200 rounded-2xl text-center shadow-sm">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-indigo-500 text-white rounded-xl flex items-center justify-center mb-3 shadow-lg shadow-indigo-200">
+                        <i class="fas fa-flag-checkered text-sm md:text-lg"></i>
                     </div>
-                    <h3 class="font-bold text-indigo-900 mb-2">RETO</h3>
-                    <p class="text-xs text-indigo-700 leading-relaxed">El disparador del proceso</p>
+                    <h3 class="font-bold text-indigo-900 text-xs md:text-sm tracking-wide">RETO</h3>
                 </div>
 
-                <div class="hidden md:block node-connector"></div>
+                <div class="node-connector hidden sm:block"></div>
 
                 <!-- Acción -->
-                <div id="card-accion" class="step-card bg-emerald-50 border-2 border-emerald-200 p-6 rounded-2xl w-full md:w-1/4 text-center">
-                    <div class="w-12 h-12 bg-emerald-500 text-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-emerald-200">
-                        <i class="fas fa-bolt text-xl"></i>
+                <div id="card-accion" class="step-card bg-emerald-50 border-2 border-emerald-200 rounded-2xl text-center shadow-sm">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-emerald-500 text-white rounded-xl flex items-center justify-center mb-3 shadow-lg shadow-emerald-200">
+                        <i class="fas fa-bolt text-sm md:text-lg"></i>
                     </div>
-                    <h3 class="font-bold text-emerald-900 mb-2">ACCIÓN</h3>
-                    <p class="text-xs text-emerald-700 leading-relaxed">La puesta en práctica</p>
+                    <h3 class="font-bold text-emerald-900 text-xs md:text-sm tracking-wide">ACCIÓN</h3>
                 </div>
 
-                <div class="hidden md:block node-connector"></div>
+                <div class="node-connector hidden sm:block"></div>
 
                 <!-- Reflexión -->
-                <div id="card-reflexion" class="step-card bg-amber-50 border-2 border-amber-200 p-6 rounded-2xl w-full md:w-1/4 text-center">
-                    <div class="w-12 h-12 bg-amber-500 text-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-amber-200">
-                        <i class="fas fa-brain text-xl"></i>
+                <div id="card-reflexion" class="step-card bg-amber-50 border-2 border-amber-200 rounded-2xl text-center shadow-sm">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-amber-500 text-white rounded-xl flex items-center justify-center mb-3 shadow-lg shadow-amber-200">
+                        <i class="fas fa-brain text-sm md:text-lg"></i>
                     </div>
-                    <h3 class="font-bold text-amber-900 mb-2">REFLEXIÓN</h3>
-                    <p class="text-xs text-amber-700 leading-relaxed">El procesamiento crítico</p>
+                    <h3 class="font-bold text-amber-900 text-xs md:text-sm tracking-wide">REFLEXIÓN</h3>
                 </div>
 
-                <div class="hidden md:block node-connector"></div>
+                <div class="node-connector hidden sm:block"></div>
 
                 <!-- Evidencia -->
-                <div id="card-evidencia" class="step-card bg-blue-50 border-2 border-blue-200 p-6 rounded-2xl w-full md:w-1/4 text-center">
-                    <div class="w-12 h-12 bg-blue-500 text-white rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-200">
-                        <i class="fas fa-file-signature text-xl"></i>
+                <div id="card-evidencia" class="step-card bg-blue-50 border-2 border-blue-200 rounded-2xl text-center shadow-sm">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-blue-500 text-white rounded-xl flex items-center justify-center mb-3 shadow-lg shadow-blue-200">
+                        <i class="fas fa-file-signature text-sm md:text-lg"></i>
                     </div>
-                    <h3 class="font-bold text-blue-900 mb-2">EVIDENCIA</h3>
-                    <p class="text-xs text-blue-700 leading-relaxed">La validación real</p>
+                    <h3 class="font-bold text-blue-900 text-xs md:text-sm tracking-wide">EVIDENCIA</h3>
                 </div>
             </div>
         </div>
 
         <!-- Simulator Section -->
-        <div class="max-w-3xl mx-auto">
-            <div class="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
-                <div class="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
-                    <div>
-                        <h2 class="text-xl font-semibold text-slate-700">Simulador de Vacíos</h2>
-                        <p class="text-sm text-slate-500 italic">Desactiva un elemento para ver la consecuencia pedagógica.</p>
-                    </div>
-                    <button onclick="resetSim()" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 uppercase tracking-wider">
-                        <i class="fas fa-sync-alt mr-1"></i> Reiniciar
+        <div class="flex-[1.2] grid grid-cols-1 md:grid-cols-2 gap-6 min-h-0">
+            <!-- Controles -->
+            <div class="bg-white rounded-[2rem] p-6 shadow-sm border border-slate-100 flex flex-col">
+                <div class="flex justify-between items-center mb-5">
+                    <h2 class="text-xs font-bold text-slate-400 uppercase tracking-[0.2em]">Simulador de Coherencia</h2>
+                    <button onclick="resetSim()" class="text-[10px] font-bold text-indigo-500 hover:text-indigo-700 transition-colors flex items-center bg-indigo-50 px-3 py-1.5 rounded-full">
+                        <i class="fas fa-sync-alt mr-2"></i> REINICIAR
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div onclick="toggleStep('reto')" id="btn-reto" class="flex items-center justify-between p-4 rounded-xl border-2 border-indigo-100 cursor-pointer bg-white hover:bg-indigo-50 transition-all select-none">
-                        <span class="font-medium text-slate-700">¿Incluir Reto?</span>
-                        <div id="toggle-bg-reto" class="w-10 h-6 bg-indigo-500 rounded-full flex items-center px-1 transition-all">
-                            <div id="dot-reto" class="toggle-dot w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+                <div class="grid grid-cols-2 gap-3 flex-1">
+                    <div onclick="toggleStep('reto')" id="btn-reto" class="sim-btn flex flex-col justify-center px-4 py-3 rounded-2xl border border-slate-100 cursor-pointer bg-white hover:border-indigo-200 hover:bg-indigo-50/30 transition-all select-none">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] font-bold text-slate-600">RETO</span>
+                            <div id="toggle-bg-reto" class="w-9 h-5 bg-indigo-500 rounded-full flex items-center px-0.5 transition-colors">
+                                <div id="dot-reto" class="toggle-dot w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+                            </div>
                         </div>
                     </div>
-                    <div onclick="toggleStep('accion')" id="btn-accion" class="flex items-center justify-between p-4 rounded-xl border-2 border-emerald-100 cursor-pointer bg-white hover:bg-emerald-50 transition-all select-none">
-                        <span class="font-medium text-slate-700">¿Incluir Acción?</span>
-                        <div id="toggle-bg-accion" class="w-10 h-6 bg-emerald-500 rounded-full flex items-center px-1 transition-all">
-                            <div id="dot-accion" class="toggle-dot w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+                    <div onclick="toggleStep('accion')" id="btn-accion" class="sim-btn flex flex-col justify-center px-4 py-3 rounded-2xl border border-slate-100 cursor-pointer bg-white hover:border-emerald-200 hover:bg-emerald-50/30 transition-all select-none">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] font-bold text-slate-600">ACCIÓN</span>
+                            <div id="toggle-bg-accion" class="w-9 h-5 bg-emerald-500 rounded-full flex items-center px-0.5 transition-colors">
+                                <div id="dot-accion" class="toggle-dot w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+                            </div>
                         </div>
                     </div>
-                    <div onclick="toggleStep('reflexion')" id="btn-reflexion" class="flex items-center justify-between p-4 rounded-xl border-2 border-amber-100 cursor-pointer bg-white hover:bg-amber-50 transition-all select-none">
-                        <span class="font-medium text-slate-700">¿Incluir Reflexión?</span>
-                        <div id="toggle-bg-reflexion" class="w-10 h-6 bg-amber-500 rounded-full flex items-center px-1 transition-all">
-                            <div id="dot-reflexion" class="toggle-dot w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+                    <div onclick="toggleStep('reflexion')" id="btn-reflexion" class="sim-btn flex flex-col justify-center px-4 py-3 rounded-2xl border border-slate-100 cursor-pointer bg-white hover:border-amber-200 hover:bg-amber-50/30 transition-all select-none">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] font-bold text-slate-600">REFLEXIÓN</span>
+                            <div id="toggle-bg-reflexion" class="w-9 h-5 bg-amber-500 rounded-full flex items-center px-0.5 transition-colors">
+                                <div id="dot-reflexion" class="toggle-dot w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+                            </div>
                         </div>
                     </div>
-                    <div onclick="toggleStep('evidencia')" id="btn-evidencia" class="flex items-center justify-between p-4 rounded-xl border-2 border-blue-100 cursor-pointer bg-white hover:bg-blue-50 transition-all select-none">
-                        <span class="font-medium text-slate-700">¿Incluir Evidencia?</span>
-                        <div id="toggle-bg-evidencia" class="w-10 h-6 bg-blue-500 rounded-full flex items-center px-1 transition-all">
-                            <div id="dot-evidencia" class="toggle-dot w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+                    <div onclick="toggleStep('evidencia')" id="btn-evidencia" class="sim-btn flex flex-col justify-center px-4 py-3 rounded-2xl border border-slate-100 cursor-pointer bg-white hover:border-blue-200 hover:bg-blue-50/30 transition-all select-none">
+                        <div class="flex justify-between items-center w-full">
+                            <span class="text-[11px] font-bold text-slate-600">EVIDENCIA</span>
+                            <div id="toggle-bg-evidencia" class="w-9 h-5 bg-blue-500 rounded-full flex items-center px-0.5 transition-colors">
+                                <div id="dot-evidencia" class="toggle-dot w-4 h-4 bg-white rounded-full ml-auto shadow-sm"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div id="consequence-container" class="mt-8 p-6 rounded-2xl bg-slate-50 border border-slate-200 min-h-[120px] flex items-center justify-center text-center">
-                    <p id="consequence-text" class="text-slate-600 font-medium italic">
-                        Selecciona un elemento para evaluar el impacto.
-                    </p>
-                </div>
+            <!-- Resultado -->
+            <div id="consequence-container" class="rounded-[2rem] p-6 flex items-center justify-center text-center border-2 border-transparent overflow-y-auto bg-white shadow-sm">
+                <p id="consequence-text" class="text-sm md:text-base text-slate-600 font-medium italic leading-relaxed"></p>
             </div>
         </div>
 
-        <footer class="mt-12 text-center text-slate-400 text-sm">
-            <p>Estructura R.A.R.E. (Reto, Acción, Reflexión, Evidencia)</p>
+        <footer class="mt-4 text-center text-slate-400 text-[10px] tracking-widest shrink-0 uppercase">
+            <p>Diseño Pedagógico R.A.R.E. &copy; 2024</p>
         </footer>
     </div>
 
@@ -166,10 +199,10 @@
         };
 
         const consequences = {
-            reto: "⚠️ <strong>Sin RETO</strong>: Hay actividad sin propósito. Los estudiantes están ocupados pero no comprometidos.",
-            accion: "⚠️ <strong>Sin ACCIÓN</strong>: Hay teoría sin aplicación. El conocimiento se queda en lo abstracto y se olvida pronto.",
-            reflexion: "⚠️ <strong>Sin REFLEXIÓN</strong>: Hay experiencia sin aprendizaje. Se hizo mucho, pero no se extrajo el valor pedagógico.",
-            evidencia: "⚠️ <strong>Sin EVIDENCIA</strong>: No hay evaluación auténtica. Es imposible verificar si se alcanzaron los objetivos."
+            reto: "⚠️ <strong>Sin RETO</strong>: Hay actividad sin propósito. Alumnos ocupados pero no comprometidos emocionalmente con el aprendizaje.",
+            accion: "⚠️ <strong>Sin ACCIÓN</strong>: Hay teoría sin aplicación. El conocimiento es inerte y se olvida al no ponerse a prueba en la realidad.",
+            reflexion: "⚠️ <strong>Sin REFLEXIÓN</strong>: Hay experiencia sin aprendizaje. La actividad termina pero no se integra el valor pedagógico ni el meta-aprendizaje.",
+            evidencia: "⚠️ <strong>Sin EVIDENCIA</strong>: No hay evaluación auténtica. Es imposible verificar si el desempeño cumple con los objetivos planteados."
         };
 
         function toggleStep(step) {
@@ -181,16 +214,16 @@
 
             if (state[step]) {
                 dot.style.transform = 'translateX(0)';
-                tglBg.classList.replace('bg-slate-300', `bg-${getStepColor(step)}-500`);
+                tglBg.className = tglBg.className.replace('bg-slate-300', `bg-${getStepColor(step)}-500`);
                 card.style.opacity = '1';
                 card.style.filter = 'grayscale(0)';
-                card.classList.remove('border-dashed', 'border-slate-300');
+                card.classList.remove('border-dashed', 'border-slate-300', 'bg-slate-50');
             } else {
                 dot.style.transform = 'translateX(-16px)';
-                tglBg.classList.replace(`bg-${getStepColor(step)}-500`, 'bg-slate-300');
-                card.style.opacity = '0.4';
+                tglBg.className = tglBg.className.replace(`bg-${getStepColor(step)}-500`, 'bg-slate-300');
+                card.style.opacity = '0.2';
                 card.style.filter = 'grayscale(1)';
-                card.classList.add('border-dashed', 'border-slate-300');
+                card.classList.add('border-dashed', 'border-slate-300', 'bg-slate-50');
             }
 
             updateOutcome();
@@ -219,15 +252,14 @@
             if (!state.evidencia) missing.push(consequences.evidencia);
 
             if (missing.length === 0) {
-                container.className = "mt-8 p-6 rounded-2xl bg-emerald-50 border border-emerald-200 outcome-box text-center shadow-inner";
-                text.innerHTML = "<span class='text-emerald-700 font-bold'><i class='fas fa-check-circle mr-2'></i>Coherencia Pedagógica Total:</span><br><span class='text-emerald-600'>El aprendizaje es auténtico, aplicado y verificable.</span>";
+                container.className = "rounded-[2rem] p-8 bg-emerald-50 border-emerald-200 outcome-box text-center shadow-inner flex-1 border-2";
+                text.innerHTML = "<span class='text-emerald-700 font-bold block mb-2 text-lg'><i class='fas fa-check-circle mr-2'></i>Coherencia Pedagógica</span><span class='text-emerald-600 text-sm'>Estructura equilibrada: el aprendizaje es auténtico, aplicado y verificable.</span>";
             } else {
-                container.className = "mt-8 p-6 rounded-2xl bg-rose-50 border border-rose-200 outcome-box text-left";
-                text.innerHTML = `<div class='space-y-3 text-rose-700 text-sm md:text-base'>${missing.join('<br>')}</div>`;
+                container.className = "rounded-[2rem] p-8 bg-rose-50 border-rose-200 outcome-box text-left flex-1 border-2";
+                text.innerHTML = `<div class='space-y-3 text-rose-700 text-sm md:text-base font-semibold'>${missing.join('<br>')}</div>`;
             }
         }
 
-        // Initialize
         updateOutcome();
     </script>
 </body>
